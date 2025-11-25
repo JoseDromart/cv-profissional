@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gerador Profissional de CV — Jose Victor Dromart</title>
+
+<!-- html2pdf para exportar PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<style>
+:root{
+  --bg:#f2f8ff; --card:#ffffff; --accent:#0b66b2; --accent-2:#0a4f90;
+  --muted:#6b7280; --radius:12px;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Arial,sans-serif;margin:0;background:linear-gradient(180deg,#f6fbff 0%,var(--bg) 100%);}
+.wrap{max-width:1100px;margin:28px auto;padding:18px;}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:0 8px 30px rgba(11,102,178,0.18)}
+h1{font-size:20px;margin:0;color:var(--accent-2)}
+p.lead{margin:0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 420px;gap:20px}
+@media (max-width:1060px){ .grid{grid-template-columns:1fr} .preview-panel{order:-1} }
+.card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 12px 30px rgba(12,44,80,0.06);transition:transform .18s ease}
+.card:active{transform:translateY(1px)}
+.section-title{color:var(--accent);font-weight:700;margin:8px 0 12px;font-size:15px;border-left:4px solid var(--accent);padding-left:10px}
+.field{display:block;margin-bottom:10px}
+label.label{display:block;font-size:13px;color:#123;margin-bottom:6px;font-weight:600}
+input[type="text"], input[type="email"], textarea, select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e6eef9;background:linear-gradient(180deg,#fff,#fbfdff);font-size:14px;outline:none;transition:box-shadow .12s ease, border-color .12s ease;}
+textarea{min-height:84px;resize:vertical}
+input:focus, textarea:focus, select:focus{box-shadow:0 8px 24px rgba(11,102,178,0.07);border-color:var(--accent)}
+.row{display:flex;gap:12px}
+.row .col{flex:1}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+.btn{background:var(--accent);color:white;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(11,102,178,0.12);transition:transform .12s ease, box-shadow .12s ease, background .12s ease;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(11,102,178,0.14)}
+.btn:active{transform:translateY(-1px)}
+.btn.secondary{background:white;color:var(--accent);border:1px solid #e6eef9;box-shadow:none}
+.error{color:#b71c1c;background:#fff1f1;padding:8px;border-radius:8px;border:1px solid #f5c6c6;margin-top:6px;font-size:13px;display:none}
+.error.show{display:block}
+.preview-panel .card{min-height:520px;overflow:auto}
+.cv{padding:20px;max-width:760px;margin:0 auto;background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:8px;}
+.cv-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:6px}
+.avatar{width:92px;height:92px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:28px;flex-shrink:0;}
+.name{font-size:22px;font-weight:800;color:#07263a}
+.meta{color:var(--muted);margin-top:6px;font-size:13px}
+.section{margin-top:14px}
+.section h3{margin:0 0 8px;color:var(--accent);font-size:13px;border-left:4px solid var(--accent);padding-left:10px}
+.kv{display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+.kv .k{min-width:140px;color:var(--muted);font-size:13px}
+.kv .v{flex:1;font-size:14px;line-height:1.45}
+.small{font-size:13px;color:var(--muted)}
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <div class="logo">CV</div>
+    <div>
+      <h1>Gerador Profissional de CV</h1>
+      <p class="lead">Preenche os dados, validações automáticas e exporta em PDF profissional.</p>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+<section class="card form-panel">
+<h2 class="section-title">Informações Pessoais</h2>
+
+<div class="field">
+  <label class="label">Nome completo</label>
+  <input id="nome" type="text" placeholder="Ex: João da Silva">
+  <div id="err-nome" class="error">Preenche o nome.</div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="field">
+      <label class="label">Data de nascimento (dd/mm/aaaa)</label>
+      <input id="dataNasc" type="text" maxlength="10" placeholder="27/11/2006">
+      <div id="err-data" class="error">Formato inválido.</div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="field">
+      <label class="label">Nacionalidade</label>
+      <select id="nacionalidade">
+        <option value="">— Seleciona —</option>
+        <option>Moçambicana</option>
+        <option>Portuguesa</option>
+        <option>Brasileira</option>
+        <option>Angolana</option>
+        <option>Outra</option>
+      </select>
+      <div id="err-nacionalidade" class="error">Seleciona a nacionalidade.</div>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Estado civil</label>
+  <select id="estadoCivil">
+    <option value="">—</option>
+    <option>Solteiro(a)</option>
+    <option>Casado(a)</option>
+    <option>União Estável</option>
+    <option>Divorciado(a)</option>
+    <option>Viúvo(a)</option>
+  </select>
+</div>
+
+<div class="field">
+  <label class="label">Endereço (bairro, cidade)</label>
+  <input id="endereco" type="text" placeholder="Ex: Polana, Maputo">
+</div>
+
+<div class="field">
+  <label class="label">Número de telefone (9 dígitos: 82/83/84/85/86/87)</label>
+  <input id="telefone" type="text" maxlength="9" placeholder="82xxxxxxx">
+  <div id="err-telefone" class="error">Número inválido.</div>
+</div>
+
+<div class="field">
+  <label class="label">Email</label>
+  <input id="email" type="email" placeholder="seu@exemplo.com">
+  <div id="err-email" class="error">Email inválido.</div>
+</div>
+
+<div class="field">
+  <label class="label">Possui NUIT? (10 dígitos)</label>
+  <input id="nuit" type="text" maxlength="10" placeholder="1234567890">
+  <div id="err-nuit" class="error">NUIT inválido.</div>
+</div>
+
+<!-- Objetivo e demais seções -->
+<h3 class="section-title">Objetivo Profissional</h3>
+<div class="field"><textarea id="objetivo" placeholder="Descreve teu objetivo..."></textarea></div>
+<h3 class="section-title">Formação Acadêmica</h3>
+<div class="field"><textarea id="formacao" placeholder="Curso — Instituição — Ano"></textarea></div>
+<h3 class="section-title">Competências Técnicas</h3>
+<div class="field"><textarea id="competencias" placeholder="Ex: JavaScript, PHP, MySQL"></textarea></div>
+<h3 class="section-title">Experiência Profissional</h3>
+<div class="field"><textarea id="experiencia" placeholder="Empresa — Cargo — Período"></textarea></div>
+<h3 class="section-title">Idiomas</h3>
+<div class="field"><input id="idiomas" type="text" placeholder="Ex: Português, Inglês"></div>
+<h3 class="section-title">Habilidades Pessoais</h3>
+<div class="field"><input id="habilidades" type="text" placeholder="Ex: Comunicação, Organização"></div>
+<h3 class="section-title">Projetos / Links</h3>
+<div class="field"><textarea id="projetos" placeholder="Título — Descrição — Link"></textarea></div>
+<h3 class="section-title">Trabalhos Informais / Voluntariado (opcional)</h3>
+<div class="field"><textarea id="voluntariado" placeholder="Atividade — Organização — Ano"></textarea></div>
+<h3 class="section-title">Disponibilidade</h3>
+<div class="field">
+<select id="disponibilidade">
+<option>Imediata</option>
+<option>1–2 semanas</option>
+<option>1 mês</option>
+<option>Outro</option>
+</select>
+</div>
+
+<div class="actions">
+<button id="btnPreview" class="btn secondary">Pré-visualizar</button>
+  <button id="btnClear" class="btn secondary">Limpar</button>
+  <button id="btnPdf" class="btn">Exportar PDF</button>
+  
+</div>
+
+</section>
+
+<aside class="preview-panel">
+  <div class="card">
+    <div id="previewArea" class="cv" aria-live="polite">
+      <div style="text-align:center;color:var(--muted);padding:80px 20px">
+        <strong style="color:var(--accent)">Preview profissional aqui</strong><br>
+        Clica em <em>Exportar PDF</em> para ver o CV.
+      </div>
+    </div>
+  </div>
+</aside>
+</main>
+
+<footer>
+<p class="small">Feito por Jose Victor Dromart — formato profissional, azul & branco. Exporta em PDF.</p>
+</footer>
+</div>
+
+<script>
+const q=id=>document.getElementById(id);
+const prefixes=['82','83','84','85','86','87'];
+function showError(id,show){q(id).classList.toggle('show',!!show);}
+function validaNome(){return q('nome').value.trim().length>1;}
+function validaData(){const v=q('dataNasc').value.trim();if(!/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/.test(v))return false;const p=v.split('/');const d=parseInt(p[0],10),m=parseInt(p[1],10),y=parseInt(p[2],10);const dt=new Date(y,m-1,d);return dt&&dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d;}
+function validaTelefone(){const v=q('telefone').value.trim();if(!/^\d{9}$/.test(v))return false;return prefixes.includes(v.slice(0,2));}
+function validaEmail(){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(q('email').value.trim());}
+function validaNUIT(){return /^\d{10}$/.test(q('nuit').value.trim());}
+q('btnClear').addEventListener('click',()=>{if(!confirm('Limpar todos os campos?'))return;document.querySelectorAll('input,textarea,select').forEach(i=>i.value='');q('previewArea').innerHTML='<div style="text-align:center;color:var(--muted);padding:80px 20px"><strong style="color:var(--accent)">Preview profissional aqui</strong><br>Clica em Exportar PDF.</div>';});
+q('telefone').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,9));
+q('nuit').addEventListener('input',e=>e.target.value=e.target.value.replace(/\D/g,'').slice(0,10));
+q('dataNasc').addEventListener('input',e=>{let v=e.target.value.replace(/[^\d]/g,'').slice(0,8);if(v.length>4)v=v.slice(0,2)+'/'+v.slice(2,4)+'/'+v.slice(4);else if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);e.target.value=v;});
+function escapeHtml(s){return s?s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'):"";}
+function buildPreview(){
+  let ok=true;
+  if(!validaNome()){showError('err-nome',true);ok=false}else showError('err-nome',false);
+  if(!validaData()){showError('err-data',true);ok=false}else showError('err-data',false);
+  if(!validaTelefone()){showError('err-telefone',true);ok=false}else showError('err-telefone',false);
+  if(!validaEmail()){showError('err-email',true);ok=false}else showError('err-email',false);
+  if(!validaNUIT()){showError('err-nuit',true);ok=false}else showError('err-nuit',false);
+  if(!ok){const f=document.querySelector('.error.show');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});return false;}
+  const data={
+    nome:q('nome').value.trim(),dataNasc:q('dataNasc').value.trim(),
+    nacionalidade:q('nacionalidade').value,estadoCivil:q('estadoCivil').value,endereco:q('endereco').value.trim(),
+    telefone:q('telefone').value.trim(),email:q('email').value.trim(),nuit:q('nuit').value.trim(),
+    objetivo:q('objetivo').value.trim(),formacao:q('formacao').value.trim(),competencias:q('competencias').value.trim(),
+    experiencia:q('experiencia').value.trim(),idiomas:q('idiomas').value.trim(),habilidades:q('habilidades').value.trim(),
+    projetos:q('projetos').value.trim(),voluntariado:q('voluntariado').value.trim(),disponibilidade:q('disponibilidade').value
+  };
+  const initials=data.nome.split(' ').filter(Boolean).slice(0,2).map(s=>s[0]?.toUpperCase()).join('');
+  let html=`<div class="cv-head"><div class="avatar">${initials||'CV'}</div><div style="flex:1"><div class="name">${escapeHtml(data.nome)}</div><div class="meta">${escapeHtml(data.endereco)} · ${escapeHtml(data.nacionalidade)} · ${escapeHtml(data.estadoCivil)}</div><div class="meta" style="margin-top:6px">${escapeHtml(data.telefone)} · ${escapeHtml(data.email)} · NUIT: ${escapeHtml(data.nuit)}</div></div></div>`;
+  html+=`<div class="section"><h3>Objetivo Profissional</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.objetivo)}</div></div></div>`;
+  html+=`<div class="section"><h3>Informações Pessoais</h3><div class="kv"><div class="k">Data de nascimento</div><div class="v">${escapeHtml(data.dataNasc)}</div></div><div class="kv"><div class="k">Disponibilidade</div><div class="v">${escapeHtml(data.disponibilidade)}</div></div></div>`;
+  html+=`<div class="section"><h3>Formação Acadêmica</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.formacao)}</div></div></div>`;
+  html+=`<div class="section"><h3>Competências Técnicas</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.competencias)}</div></div></div>`;
+  html+=`<div class="section"><h3>Experiência Profissional</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.experiencia)}</div></div></div>`;
+  html+=`<div class="section"><h3>Idiomas</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.idiomas)}</div></div></div>`;
+  html+=`<div class="section"><h3>Habilidades Pessoais</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.habilidades)}</div></div></div>`;
+  html+=`<div class="section"><h3>Projetos</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.projetos)}</div></div></div>`;
+  if(data.voluntariado) html+=`<div class="section"><h3>Voluntariado</h3><div class="kv"><div class="k"></div><div class="v">${escapeHtml(data.voluntariado)}</div></div></div>`;
+  q('previewArea').innerHTML=html;
+  return true;
+}
+
+q('btnPdf').addEventListener('click',()=>{
+  if(!buildPreview())return;
+  const element=q('previewArea');
+  html2pdf().set({margin:0.3,filename:'CV_'+q('nome').value.trim()+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'portrait'}}).from(element).save();
+});
+</script>
+</body>
+</html>
